@@ -8,7 +8,7 @@ const Header = ({ darkMode, toggleDarkMode }) => {
     <header className="header">
       <div className="container">
         <Link to="/" className="logo">
-          <h1>Maximum Entropy Decision Planner</h1>
+          <h1>Decision Planner</h1>
         </Link>
         <nav className="nav">
           <Link to="/" className={location.pathname === "/" ? "nav-link active" : "nav-link"}>
