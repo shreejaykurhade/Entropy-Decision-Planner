@@ -5,7 +5,7 @@ const LandingPage = () => {
     <div className="landing-page">
       <div className="container">
         <section className="hero">
-          <h1>Maximum Entropy Decision Planner</h1>
+          <h1>Decision Planner</h1>
           <p className="hero-subtitle">Make optimal decisions using the Maximum Entropy Principle</p>
           <p className="hero-description">
             Input your actions and rewards, set constraints, and let our algorithm compute the optimal probability
