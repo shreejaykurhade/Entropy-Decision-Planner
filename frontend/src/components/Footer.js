@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="container">
         <div className="footer-content">
           <div className="footer-section">
-            <h3>Maximum Entropy Decision Planner</h3>
+            <h3>Decision Planner</h3>
             <p>
               Make optimal decisions using the Maximum Entropy Principle. Our algorithm helps you find the best
               probability distribution over your available actions while meeting your constraints.
