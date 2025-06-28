@@ -12,6 +12,28 @@ app.use(express.json())
 // In-memory storage for shared results
 const sharedResults = new Map()
 
+// Helper function to get the correct base URL
+function getBaseUrl(req) {
+  // Check if we're on Vercel
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`
+  }
+
+  // Check for custom domain or other deployment platforms
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  }
+
+  // Use the request headers to determine the URL
+  const protocol = req.get("x-forwarded-proto") || req.protocol || "http"
+  const host = req.get("x-forwarded-host") || req.get("host")
+
+  // For production deployments, prefer HTTPS
+  const finalProtocol = host && !host.includes("localhost") ? "https" : protocol
+
+  return `${finalProtocol}://${host}`
+}
+
 // Mathematically correct Maximum Entropy Optimization
 function maximizeEntropy(rewards, minExpectedReward, maxIterations = 5000, tolerance = 1e-12) {
   const n = rewards.length
@@ -313,15 +335,22 @@ app.post("/api/optimize", (req, res) => {
   }
 })
 
-// Share result endpoint
+// Share result endpoint - FIXED URL GENERATION
 app.post("/api/share", (req, res) => {
   try {
     const result = req.body
     const shareId = Math.random().toString(36).substring(2, 15)
     sharedResults.set(shareId, result)
 
-    res.json({ shareId, shareUrl: `${req.protocol}://${req.get("host")}/shared/${shareId}` })
+    // Get the correct base URL for the deployment
+    const baseUrl = getBaseUrl(req)
+    const shareUrl = `${baseUrl}/shared/${shareId}`
+
+    console.log("Generated share URL:", shareUrl) // Debug log
+
+    res.json({ shareId, shareUrl })
   } catch (error) {
+    console.error("Share error:", error)
     res.status(500).json({ error: "Failed to create share link" })
   }
 })
@@ -336,6 +365,16 @@ app.get("/api/shared/:id", (req, res) => {
   }
 
   res.json(result)
+})
+
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "ok",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development",
+    baseUrl: getBaseUrl(req),
+  })
 })
 
 // Serve React app - only in production or if build exists
@@ -366,10 +405,15 @@ if (buildExists) {
       message:
         "Frontend not built yet. Run 'npm run build' in the frontend directory, or start the React dev server separately.",
       mode: "development",
+      baseUrl: getBaseUrl(req),
     })
   })
 }
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
+  console.log(`Environment: ${process.env.NODE_ENV || "development"}`)
+  if (process.env.VERCEL_URL) {
+    console.log(`Vercel URL: https://${process.env.VERCEL_URL}`)
+  }
 })
