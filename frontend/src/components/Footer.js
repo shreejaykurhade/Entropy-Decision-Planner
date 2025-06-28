@@ -35,19 +35,6 @@ const Footer = () => {
               <li>Get Optimal Strategy</li>
             </ul>
           </div>
-
-          <div className="footer-section">
-            <h4>Mathematical Foundation</h4>
-            <p>
-              Based on the Maximum Entropy Principle from information theory, our algorithm finds the probability
-              distribution that maximizes uncertainty while satisfying your reward constraints.
-            </p>
-            <div className="formula">
-              <strong>Maximize:</strong> H = -∑pᵢ log pᵢ
-              <br />
-              <strong>Subject to:</strong> ∑pᵢ = 1, ∑pᵢrᵢ ≥ R_min
-            </div>
-          </div>
         </div>
 
         <div className="footer-bottom">
