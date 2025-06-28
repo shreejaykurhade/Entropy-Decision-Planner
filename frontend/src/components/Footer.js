@@ -53,19 +53,13 @@ const Footer = () => {
         <div className="footer-bottom">
           <div className="footer-bottom-content">
             <div className="copyright">
-              <p>&copy; {currentYear} Maximum Entropy Decision Planner. Built with JavaScript, React & Express.</p>
+              <p>&copy; {currentYear} Maximum Entropy Decision Planner.</p>
             </div>
             <div className="footer-links">
               <span className="tech-stack">
                 <strong>Tech Stack:</strong> React • Node.js • Express • Chart.js • Maximum Entropy Optimization
               </span>
             </div>
-          </div>
-          <div className="footer-note">
-            <p>
-              <strong>Free & Open Source</strong> - No API keys required. All calculations performed locally using
-              advanced numerical optimization algorithms.
-            </p>
           </div>
         </div>
       </div>
