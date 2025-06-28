@@ -381,7 +381,7 @@ app.get("/api/health", (req, res) => {
 const fs = require("fs")
 
 // Check if build directory exists
-const buildPath = path.join(__dirname, "../frontend/build")
+const buildPath = path.join(__dirname, "../frontend")
 const buildExists = fs.existsSync(buildPath)
 
 if (buildExists) {
